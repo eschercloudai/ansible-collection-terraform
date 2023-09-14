@@ -13,3 +13,6 @@ terraform_variables: {}
 
 # The gateway user defaults to the regular SSH user
 cluster_gateway_user: "{{ cluster_ssh_user }}"
+
+# just do  a terraform show to populate the inventory 
+terraform_do_not_apply: false
