@@ -16,3 +16,6 @@ cluster_gateway_user: "{{ cluster_ssh_user }}"
 
 # Adopt infrastructure into the in-memory inventory
 terraform_adopt_inventory: true
+
+# Apply changed by default
+terraform_do_not_apply: false

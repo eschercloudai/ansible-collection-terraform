@@ -18,7 +18,23 @@
     init_reconfigure: yes
     variables: "{{ terraform_variables }}"
   register: terraform_provision
+  when: not terraform_do_not_apply
 
+- block:
+  - name: get terraform state when not provisioning
+    command: "{{ terraform_binary_path or omit }} output -json"
+    args:
+      chdir: "{{ terraform_project_path }}"
+    register: terraform_output_provision
+
+  - name: convert terraform output format when not applying
+    set_fact:
+      terraform_provision: "{{ terraform_output_provision.stdout | from_json}}"
+
+  - set_fact:
+      terraform_provision: "{{ {} |combine ( {'outputs' : terraform_provision} ) }} "
+  when: terraform_do_not_apply
+  
 - name: Populate in-memory inventory
   include_tasks: inventory_adopt.yml
   when: 
