@@ -56,6 +56,13 @@
     loop_var: node
     label: "{{ node.name }}"
 
+- name: "waiting for the port tcp/22 to be open cluster gateway node"
+  ansible.builtin.wait_for:
+    host: "{{ cluster_gateway_ip }}"
+    port: 22
+    state: "started"
+    timeout: 600
+
 - name: "waiting for the port tcp/22 to be open on all cluster nodes"
   ansible.builtin.wait_for:
     host: "{{hostvars[node.name]['ansible_host']}}"
